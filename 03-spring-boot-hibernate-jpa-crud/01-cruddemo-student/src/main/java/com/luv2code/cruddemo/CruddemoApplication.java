@@ -23,9 +23,17 @@ public class CruddemoApplication {
 			//readStudent(studentDAO);
 			//queryForStudents(studentDAO);
 			//queryForStudentsByLatName(studentDAO);
+			//updateStudent(studentDAO);
 
-			updateStudent(studentDAO);
+			seleteStudent(studentDAO);
 		};
+	}
+
+	private void seleteStudent(StudentDAO studentDAO) {
+		//
+		int studentId = 3 ;
+		System.out.println("Deleting student id : " + studentId );
+		studentDAO.delete(studentId);
 	}
 
 	private void updateStudent(StudentDAO studentDAO) {
@@ -37,7 +45,7 @@ public class CruddemoApplication {
 
 		// change first name to Scooby
 		System.out.println("Updating student id");
-		myStudent.setFirstName("Scooby");
+		myStudent.setFirstName("John");
 
 		//update the student
 		studentDAO.update(myStudent);
