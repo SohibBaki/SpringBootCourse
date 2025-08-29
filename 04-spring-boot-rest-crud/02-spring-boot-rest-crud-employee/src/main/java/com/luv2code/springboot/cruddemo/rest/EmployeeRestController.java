@@ -1,21 +1,25 @@
 package com.luv2code.springboot.cruddemo.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luv2code.springboot.cruddemo.entity.Employee;
 import com.luv2code.springboot.cruddemo.service.EmployeeService;
 import jakarta.persistence.EntityManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping ("/api")
 public class EmployeeRestController {
 
 private EmployeeService employeeService;
+private ObjectMapper objectMapper;
 
     //quick and dirty : inject employee dao (use constructor injection)
-    public EmployeeRestController(EmployeeService theEmployeeService){
+    public EmployeeRestController(EmployeeService theEmployeeService , ObjectMapper theObjectMapper){
         employeeService = theEmployeeService;
+        objectMapper = theObjectMapper;
     }
 
     //expose "/employees" and list of employees
@@ -56,6 +60,30 @@ private EmployeeService employeeService;
 
         Employee dbEmployee = employeeService.save(theEmployee);
         return dbEmployee;
+    }
+
+    // add mapping for PATCH /employees/{employeeId} - patch employee ... partial update
+
+    @PatchMapping("/employees/{employeeId}")
+    public Employee patchEmployee(@PathVariable int employeeId
+                                    , @RequestBody Map<String , Object> patchPayload){
+        Employee theEmployee = employeeService.findById(employeeId);
+
+        // throw an exception if null
+        if(theEmployee == null){
+            throw new RuntimeException("Employee id not found ");
+
+        }
+        // throw exception if request body contains "id" key
+        if (patchPayload.containsKey("id")){
+            throw new RuntimeException("Employee id not allowed in request body - " + employeeId);
+        }
+
+        Employee patchedEmployee = apply(patchPayload,theEmployee);
+    }
+
+    private Employee apply(Map<String, Object> patchPayload, Employee theEmployee) {
+
     }
 
 }
