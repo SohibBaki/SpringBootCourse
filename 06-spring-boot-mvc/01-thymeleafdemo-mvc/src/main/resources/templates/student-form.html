@@ -5,7 +5,7 @@
     <title>Student Registration Form</title>
 </head>
 <body>
-<h3>Student RRegistration Form</h3>
+<h3>Student Registration Form</h3>
 
 <form th:action="@{/processStudentForm}" th:object="${student}" method="POST">
 
@@ -13,42 +13,52 @@
 
     <br><br>
 
-        Last name : <input type="text" th:field="*{lastName}"/>
+    Last name : <input type="text" th:field="*{lastName}"/>
 
     <br><br>
 
     Country:
 
-        <select th:field="*{country}">
-
-            <option th:each="tempCountry : ${countries}" th:value="${tempCountry}" th:text="${tempCountry}"/>
-
-        </select>
+    <select th:field="*{country}">
+        <option th:each="tempCountry : ${countries}"
+                th:value="${tempCountry}"
+                th:text="${tempCountry}"/>
+    </select>
 
     <br><br>
 
     Favorite Programming Language:
 
+    <br>
+    <label th:each="tempLang : ${languages}">
+        <input type="radio"
+               th:field="*{favoriteLanguage}"
+               th:value="${tempLang}"/>
+        <span th:text="${tempLang}"></span>
+    </label>
+
+    <br><br>
+
+    Favorite Operating Systems :
+    <br>
     <label>
-        <input type="radio" th:field="*{favoriteLanguage}"
-               th:each="tempLang : ${languages}"
-               th:value="$tempLang"
-               th:text="$tempLang"/>
+        <input type="checkbox" th:field="*{favoriteSystems}" th:value="Linux"/>
+        Linux
+    </label>
+    <label>
+        <input type="checkbox" th:field="*{favoriteSystems}" th:value="macOS"/>
+        macOS
+    </label>
+    <label>
+        <input type="checkbox" th:field="*{favoriteSystems}" th:value="Microsoft Windows"/>
+        Microsoft Windows
     </label>
 
     <br><br>
 
     <input type="submit" value="submit"/>
+
 </form>
-
-    <br><br>
-    Favorite Operating Systems :
-<input type="checkbox" th:field="*{favoriteSystems}" th:value="Linux">Linux</input>
-<input type="checkbox" th:field="*{favoriteSystems}" th:value="macOS">macOS</input>
-<input type="checkbox" th:field="*{favoriteSystems}" th:value="'Microsoft Windows'">Microsoft Windows</input>
-
-    <br><br>
-
 
 </body>
 </html>
